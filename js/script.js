@@ -1,5 +1,65 @@
 $(document).ready(function(){
     var lat = 0, lon = 0;
+
+    $(".search-box input").on("keyup", function(){
+        $(".search-sugg").css('display', 'flex');
+        $(".search-sugg").empty();
+        var city = $(this).val();
+
+        if (city. length === 0){
+            $(".search-sugg").css('display', 'none');
+            $(".search-sugg").empty();
+        } 
+        else
+            $.getJSON("node_modules\\cities.json\\cities.json", 
+                function (data) {  
+                    var format = '';
+                    // ITERATING THROUGH OBJECTS
+                    $.each(data, function (key, value) {
+                        if(value.name.toLowerCase().startsWith(city.toLowerCase())){
+                            format += `<div class="sugg"> ${value.name}, ${value.country} </div>`;
+                        }
+                    });
+
+                    $(".search-sugg").append(format);
+
+                    //INSERTING ROWS INTO TABLE 
+                    // $('#table').append(student);
+
+
+                    $(".sugg").click(function(){
+                        $(".search-box input").val($(this).text());
+                        $(".search-sugg").empty();
+                    })
+                }
+            );
+    })
+
+
+    function search(city){
+        $.getJSON("node_modules\\cities.json\\cities.json", 
+            function (data) {  
+                var format = '';
+                var i = 0;
+                // ITERATING THROUGH OBJECTS
+                $.each(data, function (key, value) {
+                    if(i < 4){
+                        if(value.name.toLowerCase().includes(city.toLowerCase())){
+                            format += `<div class="sugg"> ${value.name} </div>`;
+                            i++;
+                        }
+                    }
+                    else
+                        return;
+                    
+                });
+                
+                //INSERTING ROWS INTO TABLE 
+                // $('#table').append(student);
+            }
+        );
+    }
+
     $(".search-box button").click(function(){
 
         const apikey = '9e60f87fc2d4aa6854b3796287d81647';
@@ -74,8 +134,6 @@ $(document).ready(function(){
                 $('.weather-details').addClass('fadeIn');
     
                 $('.container').css('height', "592px");
-    
-                
             })
         }, 1000)
             
