@@ -47,6 +47,7 @@ body {
    background: #fff;
    border-bottom-left-radius: 18px;
    border-bottom-right-radius: 18px;
+   z-index: 99;
 }
 
 .search-sugg .sugg{

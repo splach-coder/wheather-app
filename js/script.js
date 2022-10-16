@@ -17,7 +17,7 @@ $(document).ready(function(){
                     // ITERATING THROUGH OBJECTS
                     $.each(data, function (key, value) {
                         if(value.name.toLowerCase().startsWith(city.toLowerCase())){
-                            format += `<div class="sugg"> ${value.name}, ${value.country} </div>`;
+                            format += `<div class="sugg"> <span> ${value.name} </span>, ${value.country} </div>`;
                         }
                     });
 
@@ -28,40 +28,15 @@ $(document).ready(function(){
 
 
                     $(".sugg").click(function(){
-                        $(".search-box input").val($(this).text());
+                        $(".search-box input").val($(this).children('span').text());
                         $(".search-sugg").empty();
                     })
                 }
             );
     })
 
-
-    function search(city){
-        $.getJSON("node_modules\\cities.json\\cities.json", 
-            function (data) {  
-                var format = '';
-                var i = 0;
-                // ITERATING THROUGH OBJECTS
-                $.each(data, function (key, value) {
-                    if(i < 4){
-                        if(value.name.toLowerCase().includes(city.toLowerCase())){
-                            format += `<div class="sugg"> ${value.name} </div>`;
-                            i++;
-                        }
-                    }
-                    else
-                        return;
-                    
-                });
-                
-                //INSERTING ROWS INTO TABLE 
-                // $('#table').append(student);
-            }
-        );
-    }
-
     $(".search-box button").click(function(){
-
+        $(".search-sugg").css('display', 'none');
         const apikey = '9e60f87fc2d4aa6854b3796287d81647';
         const city = $(".search-box input").val();
 
@@ -140,4 +115,16 @@ $(document).ready(function(){
         
 
     })
+
+    setInterval(function(){
+        if($(".search-box input").val().lenght === 0){
+            $('.container').css('height', "400px");
+    
+            $(".weather-box").css('display', 'none');
+            $(".weather-details").css('display', 'none');
+            
+            $(".not-found").css('display', 'block');
+            $(".not-found").addClass('fadeIn');
+        }
+    }, 250)
 })
